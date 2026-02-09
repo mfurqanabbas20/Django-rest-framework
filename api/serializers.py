@@ -6,7 +6,6 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = (
             'name',
-            'description',
             'price',
             'stock'
         )
@@ -17,5 +16,4 @@ class ProductSerializer(serializers.ModelSerializer):
                 "Price must be greater than 0"
             )
         return value
-    
     
