@@ -24,11 +24,18 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = (
             'product',
             'quantity',
+            'item_subtotal',
         )
-    
+    # hyperlink related field
 class OrderSerializer(serializers.ModelSerializer):
     # This field name should be same as model defined field use related names
     items = OrderItemSerializer(many=True, read_only=True)
+    total_price = serializers.SerializerMethodField()
+
+    def get_total_price(self, obj):
+        # obj is a instance of order
+        order_items = obj.items.all()
+        return sum(order_item.item_subtotal for order_item in order_items)
     class Meta:
         model = Order
         fields = (
@@ -36,5 +43,6 @@ class OrderSerializer(serializers.ModelSerializer):
             'created_at',
             'user',
             'status',
-            'items'
+            'items',
+            'total_price',
         )
